@@ -1,40 +1,35 @@
 ﻿namespace ErraticMotion
 {
     using System;
-    using System.Collections.Generic;
+    using static Builders;
 
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main()
         {
-            new Machine(
-                new Add(
-                    new Multiply(new Number(1), new Number(2)), 
-                    new Multiply(new Number(3), new Number(4))))
-                .Run();
+            Machine.Run(Add(Multiply(1, 2), Multiply(3, 4)));
+            Console.WriteLine();
 
-            new Machine(
-                    new LessThan(
-                        new Number(5), 
-                        new Add(new Number(2), new Number(2))))
-                .Run();
+            Machine.Run(LessThan(5, Add(2, 2)));
+            Console.WriteLine();
 
-            new Machine(
-                new Add(new Variable("x"), new Variable("y")),
-                new List<Tuple<string, IReduce>>
-                {
-                    new Tuple<string, IReduce>("x", new Number(3)),
-                    new Tuple<string, IReduce>("y", new Number(4))
-                }
-                ).Run();
+            Machine.Run(Add("x".Is(3), "y".Is(4)));
+            Console.WriteLine();
 
-            new Machine(
-                new Assign("x", new Add(new Variable("x"), new Number(1))),
-                new Environment(new List<Tuple<string, IReduce>>
-                {
-                    new Tuple<string, IReduce>("x", new Number(2))
-                })
-                ).Run();
+            Machine.Run("x".Add(1), "x".Is(2));
+            Console.WriteLine();
+
+            Machine.Run("x".If()
+                    .Then("y".Assign(1))
+                    .Else("y".Assign(2)),
+                "x".Is(true), "y".Is(0));
+            Console.WriteLine();
+
+            Machine.Run("x".If()
+                    .Then("y".Assign(1))
+                    .Else("y".DoesNothing()),
+                "x".Is(false), "y".Is(0));
+            Console.WriteLine();
 
 
             Console.ReadLine();

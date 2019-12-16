@@ -1,10 +1,22 @@
 ﻿namespace ErraticMotion
 {
     using System;
-    using System.Collections.Generic;
+    using E = System.Tuple<string, IReduce>;
 
     public class Machine
     {
+        public static void Run(IReduce item)
+            => new Machine(item).Run();
+
+        public static void Run(IReduce item, Environment env)
+            => new Machine(item, env).Run();
+
+        public static void Run(Tuple<IReduce, Environment> item)
+            => Run(item.Item1, item.Item2);
+
+        public static void Run(IReduce item, params E[] env)
+            => new Machine(item, new Environment(env)).Run();
+
         private IReduce expression;
         private Environment env;
 
@@ -13,7 +25,7 @@
         {
         }
 
-        public Machine(IReduce expression, IEnumerable<Tuple<string, IReduce>> env)
+        public Machine(IReduce expression, params E[] env)
             : this(expression, new Environment(env))
         {
         }
