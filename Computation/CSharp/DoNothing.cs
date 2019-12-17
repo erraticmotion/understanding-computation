@@ -1,15 +1,24 @@
 ﻿namespace ErraticMotion
 {
-    public class DoNothing : SemanticBase
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="IReduce" />
+    public class DoNothing : IReduce
     {
-        public DoNothing()
-            : base(false)
-        {
-        }
+        /// <inheritdoc />
+        public bool Reducible()
+            => false;
 
-        public override object Value()
+        /// <inheritdoc />
+        public Reduced Reduce(Environment env)
+            => throw new System.NotSupportedException();
+
+        /// <inheritdoc />
+        public object Value()
             => "do-nothing";
 
+        /// <inheritdoc />
         public override string ToString()
             => this.Value().ToString();
     }

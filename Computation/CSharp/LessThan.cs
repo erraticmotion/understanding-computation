@@ -1,16 +1,26 @@
 ﻿namespace ErraticMotion
 {
-    public class LessThan : SemanticBase
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <seealso cref="ErraticMotion.ReduceBase" />
+    public class LessThan : ReduceBase
     {
         private readonly IReduce left;
         private readonly IReduce right;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LessThan"/> class.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
         public LessThan(IReduce left, IReduce right)
         {
             this.left = left;
             this.right = right;
         }
 
+        /// <inheritdoc />
         public override Reduced Reduce(Environment env)
         {
             if (this.left.Reducible())
@@ -28,6 +38,7 @@
             return new Reduced(new Boolean((int)this.left.Value() < (int)this.right.Value()), env);
         }
 
+        /// <inheritdoc />
         public override string ToString()
             => $"{this.left} < {this.right}";
     }
