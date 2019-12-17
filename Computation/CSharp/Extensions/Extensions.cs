@@ -1,4 +1,4 @@
-﻿namespace ErraticMotion
+﻿namespace ErraticMotion.Extensions
 {
     using E = System.Tuple<string, IReduce>;
 
@@ -26,13 +26,13 @@
             => new Assign(target, reduce);
 
         public static IReduce Add(this int target, int n)
-            => Builders.Add(target, n);
+            => new Add(target.IsNumber(), n.IsNumber());
 
         public static IReduce Add(this string target, int n)
-            => Builders.Add(target, n);
+            => new Add(target.IsVariable(), n.IsNumber());
 
         public static IReduce Multiply(this int target, int n)
-            => Builders.Multiply(target, n);
+            => new Multiply(target, n);
 
         public static IReduce Multiply(this string target, int n)
             => new Multiply(new Variable(target), new Number(n));
@@ -40,8 +40,7 @@
         public static IReduce DoesNothing(this string target)
             => new Assign(target, new DoNothing());
 
-        public static IThen If(
-            this string target)
+        public static IThen If(this string target)
             => new IfThenElse(target);
 
         public static E Is(this string target, int n)
@@ -49,35 +48,5 @@
 
         public static E Is(this string target, bool value)
             => new E(target, value.IsBoolean());
-
-        private class IfThenElse : IThen, IElse
-        {
-            private readonly string target;
-            private IReduce consequence;
-
-            public IfThenElse(string target)
-                => this.target = target;
-
-            public IElse Then(IReduce item)
-            {
-                this.consequence = item;
-                return this;
-            }
-
-            public IReduce Else(IReduce alternative)
-                => new If(target.IsVariable(), consequence, alternative);
-        }
     }
-
-    public interface IThen
-    {
-        IElse Then(IReduce consequence);
-    }
-
-    public interface IElse
-    {
-        IReduce Else(IReduce alternative);
-    }
-
-    
 }

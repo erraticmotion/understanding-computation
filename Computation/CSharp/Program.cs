@@ -1,6 +1,7 @@
 ﻿namespace ErraticMotion
 {
     using System;
+    using Extensions;
     using FluentAssertions;
     using static Builders;
     using static Machine;
