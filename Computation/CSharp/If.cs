@@ -28,6 +28,7 @@
             {
                 return new Reduced(consequence, env);
             }
+
             return new Reduced(alternative, env);
         }
 

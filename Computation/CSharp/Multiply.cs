@@ -21,13 +21,13 @@
             if (this.left.Reducible())
             {
                 var result = this.left.Reduce(env);
-                return new Reduced(new Add(result.Reduce, this.right), result.Environment);
+                return new Reduced(new Multiply(result.Reduce, this.right), result.Environment);
             }
 
             if (this.right.Reducible())
             {
                 var result = this.right.Reduce(env);
-                return new Reduced(new Add(this.left, result.Reduce), result.Environment);
+                return new Reduced(new Multiply(this.left, result.Reduce), result.Environment);
             }
 
             return new Reduced(new Number((int) this.left.Value() * (int) this.right.Value()), env);

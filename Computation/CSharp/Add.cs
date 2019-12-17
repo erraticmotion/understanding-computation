@@ -5,10 +5,10 @@
         private readonly IReduce left;
         private readonly IReduce right;
 
-        public Add(int left, int right)
-            : this(new Number(left), new Number(right))
-        {
-        }
+        //public Add(int left, int right)
+        //    : this(new Number(left), new Number(right))
+        //{
+        //}
 
         public Add(IReduce left, IReduce right)
         {

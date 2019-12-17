@@ -16,20 +16,26 @@
         public static IReduce LessThan(this int left, IReduce right)
             => new LessThan(new Number(left), right);
 
+        public static IReduce LessThan(this string target, int n)
+            => new LessThan(target.IsVariable(), n.IsNumber());
+
         public static IReduce Assign(this string target, int n)
             => Assign(target, n.IsNumber());
 
         public static IReduce Assign(this string target, IReduce reduce)
             => new Assign(target, reduce);
 
-        public static IReduce Add(this int target, int number)
-            => Builders.Add(target, number);
+        public static IReduce Add(this int target, int n)
+            => Builders.Add(target, n);
 
-        public static IReduce Add(this string target, int number)
-            => new Assign(target, Builders.Add(target, number));
+        public static IReduce Add(this string target, int n)
+            => Builders.Add(target, n);
 
-        public static IReduce Multiply(this int target, int number)
-            => Builders.Multiply(target, number);
+        public static IReduce Multiply(this int target, int n)
+            => Builders.Multiply(target, n);
+
+        public static IReduce Multiply(this string target, int n)
+            => new Multiply(new Variable(target), new Number(n));
 
         public static IReduce DoesNothing(this string target)
             => new Assign(target, new DoNothing());
