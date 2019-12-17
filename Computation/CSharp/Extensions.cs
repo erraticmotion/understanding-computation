@@ -13,14 +13,23 @@
         public static IReduce IsBoolean(this bool target)
             => new Boolean(target);
 
+        public static IReduce LessThan(this int left, IReduce right)
+            => new LessThan(new Number(left), right);
+
         public static IReduce Assign(this string target, int n)
             => Assign(target, n.IsNumber());
 
         public static IReduce Assign(this string target, IReduce reduce)
             => new Assign(target, reduce);
 
+        public static IReduce Add(this int target, int number)
+            => Builders.Add(target, number);
+
         public static IReduce Add(this string target, int number)
             => new Assign(target, Builders.Add(target, number));
+
+        public static IReduce Multiply(this int target, int number)
+            => Builders.Multiply(target, number);
 
         public static IReduce DoesNothing(this string target)
             => new Assign(target, new DoNothing());

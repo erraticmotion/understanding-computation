@@ -5,10 +5,8 @@
         private readonly int value;
 
         public Number(int value)
+            : base(false)
             => this.value = value;
-
-        public override bool Reducible()
-            => false;
 
         public override object Value()
             => this.value;

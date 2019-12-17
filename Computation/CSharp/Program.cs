@@ -1,35 +1,43 @@
 ﻿namespace ErraticMotion
 {
     using System;
+    using FluentAssertions;
     using static Builders;
+    using static Machine;
 
     public class Program
     {
         public static void Main()
         {
-            Machine.Run(Add(Multiply(1, 2), Multiply(3, 4)));
-            Console.WriteLine();
+            Run(Add(1.Multiply(2), 3.Multiply(4)))
+                .ExpressionResult()
+                .Should().Be(14);
 
-            Machine.Run(LessThan(5, Add(2, 2)));
-            Console.WriteLine();
+            Run(5.LessThan(2.Add(2)))
+                .ExpressionResult()
+                .Should().Be(false);
 
-            Machine.Run(Add("x".Is(3), "y".Is(4)));
-            Console.WriteLine();
+            Run(Add("x".Is(3), "y".Is(4)))
+                .ExpressionResult()
+                .Should().Be(7);
 
-            Machine.Run("x".Add(1), "x".Is(2));
-            Console.WriteLine();
+            Run("x".Add(1), "x".Is(2))
+                .State("x")
+                .Should().Be(3);
 
-            Machine.Run("x".If()
-                    .Then("y".Assign(1))
-                    .Else("y".Assign(2)),
-                "x".Is(true), "y".Is(0));
-            Console.WriteLine();
+            Run("x".If()
+                        .Then("y".Assign(1))
+                        .Else("y".Assign(2)),
+                "x".Is(true), "y".Is(0))
+                .State("y")
+                .Should().Be(1);
 
-            Machine.Run("x".If()
-                    .Then("y".Assign(1))
-                    .Else("y".DoesNothing()),
-                "x".Is(false), "y".Is(0));
-            Console.WriteLine();
+            Run("x".If()
+                        .Then("y".Assign(1))
+                        .Else("y".DoesNothing()),
+                    "x".Is(false), "y".Is(0))
+                .State("y")
+                .Should().Be("do-nothing");
 
 
             Console.ReadLine();

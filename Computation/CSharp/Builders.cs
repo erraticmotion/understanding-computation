@@ -19,9 +19,9 @@
             => new Add(left, right);
 
         public static Tuple<IReduce, Environment> Add(E left, E right)
-            => new Tuple<IReduce, Environment>(new Add(new Variable(left.Item1), new Variable(right.Item1)), new Environment(new List<E> {left, right}));
-
-        public static IReduce LessThan(int left, IReduce right)
-            => new LessThan(new Number(left), right);
+            => new Tuple<IReduce, Environment>(
+                new Add(new Variable(left.Item1), 
+                    new Variable(right.Item1)), 
+                new Environment(new List<E> {left, right}));
     }
 }
